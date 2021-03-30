@@ -21,11 +21,11 @@ Actiuni:
 13. Afisare detalii examen
 
 Obiecte:
-Student
-Profesor
-Materie
-An universitar
-Examen
-Nota
-Catedra
+Student;
+Profesor;
+Materie;
+An universitar;
+Examen;
+Nota;
+Catedra;
 Semestru
