@@ -2,142 +2,36 @@ package CatalogInformatica.Service;
 
 import CatalogInformatica.Model.*;
 
+import CatalogInformatica.Service.ReportGeneratorService;
+
+import CatalogInformatica.Utils.Actions;
+
 import java.util.*;
+
+
+import CatalogInformatica.Utils.*;
 
 import static CatalogInformatica.Model.Materie.compSem;
 
 public class MainService {
 
-    public List<AnUniversitar> Ani = new ArrayList<AnUniversitar>();
-    public List<Semestru> Semestre = new ArrayList<>();
-    public List<Materie> Materii = new ArrayList<Materie>();
-    public List<Examen> Examene = new ArrayList<>();
-    public List<Student> Studenti = new ArrayList<Student>();
-    public List<Profesor> Profesori = new ArrayList<Profesor>();
-    public List<Materie> MateriiProfesor = new ArrayList<Materie>();
+    public static List<AnUniversitar> Ani = new ArrayList<AnUniversitar>();
+    public static List<Semestru> Semestre = new ArrayList<>();
+    public static List<Materie> Materii = new ArrayList<Materie>();
+    public static List<Examen> Examene = new ArrayList<>();
+    public static List<Student> Studenti = new ArrayList<Student>();
+    public static List<Profesor> Profesori = new ArrayList<Profesor>();
+    public static List<Materie> MateriiProfesor = new ArrayList<Materie>();
 
 
 
-    public void afisareAn (int i)
-    {
-        System.out.println(Ani.get(i-1).toString());
-    }
-
-    public void afisareSemestru(int i)
-    {
-        for(Semestru sem : Semestre)
-            if(sem.getNr() == i)
-            {
-                System.out.println(sem.toString());
-                return;
-            }
-        System.out.println("Facultatea noastra nu are atatea semestre!");
-    }
-
-    public void afisareExamen(String materie)
-    {
-        for(Examen i : Examene)
-        {
-            if(i.getNumeMaterie().equals(materie))
-            {
-                System.out.println(i.toString());
-                return;
-            }
-        }
-        System.out.println("Examenul la aceasta materie inca nu a fost setat!");
-
-    }
-    public void adaugaStudent(Student student)
-    {
-        Nota[] note = new Nota[36];
-        for(int i = 0; i < 36; i++)
-        {
-            Nota nota = new Nota(0 , Materii.get(i));
-            note[i] = nota;
-        }
-        student.setNote(note);
-        Studenti.add(student);
-    }
-
-    public void arataStudent(int i)
-    {
-        System.out.println(Studenti.get(i-1));
-    }
-
-    public void arataNoteStudent ( int i)
-    {
-        Student temp = Studenti.get(i-1);
-        System.out.println(temp.toStringNote());
-    }
-
-    public void modificaStudent(int i, String nume, String adresa, String tel)
-    {
-        Studenti.get(i-1).setNume(nume);
-        Studenti.get(i-1).setAdresa(adresa);
-        Studenti.get(i-1).setTelefon(tel);
-
-    }
-
-    public void modificaAnStudent(int i, int an)
-    {
-        Studenti.get(i-1).setAn(an);
-    }
-
-    public void adaugaProfesor(Profesor profesor)
-    {
-        Profesori.add(profesor);
-    }
-
-    public void modificaProfesor(int i, String nume, String adresa, String tel)
-    {
-        Profesori.get(i-1).setNume(nume);
-        Profesori.get(i-1).setAdresa(adresa);
-        Profesori.get(i-1).setTelefon(tel);
-    }
-
-    public void arataProfesor(int i)
-    {
-        System.out.println(Profesori.get(i-1));
-    }
-
-    public void adaugaMateriiProfesor(String materie)
-    {
-        if(verificaMaterie(materie) != null)
-            MateriiProfesor.add(verificaMaterie(materie));
-    }
-
-
-    public Materie verificaMaterie(String ver)
-    {
-        for(Materie i : Materii)
-        {
-            if(i.getNumeMaterie().equals(ver))
-                return i;
-        }
-        return null;
-
-    }
-
-    public void modificaNumeMaterie(String materie, String nou)
-    {
-        verificaMaterie(materie).setNumeMaterie(nou);
-    }
-
-    public void modificaSemestruMaterie(String materie, int sem)
-    {
-        verificaMaterie(materie).setSemestru(sem);
-    }
 
     //initializari
 
     public void initializareAni()
     {
-        AnUniversitar an1 = new AnUniversitar(1 , 3);
-        Ani.add(an1);
-        AnUniversitar an2 = new AnUniversitar(2 , 2);
-        Ani.add(an2);
-        AnUniversitar an3 = new AnUniversitar(3 , 2);
-        Ani.add(an3);
+        Ani = Actions.retrieveAni();
+        ReportGeneratorService.generateAniReport(Ani);
 //        for(AnUniversitar a : Ani)
 //        {
 //            System.out.println(a);
@@ -147,20 +41,20 @@ public class MainService {
 
     public void intializareSemestre()
     {
-        Semestru s1 = new Semestru(1, 3, 1);
-        Semestre.add(s1);
-        Semestru s2 = new Semestru(1, 3, 2);
-        Semestre.add(s2);
-        Semestru s3 = new Semestru(2, 2, 3);
-        Semestre.add(s3);
-        Semestru s4 = new Semestru(2, 2, 4);
-        Semestre.add(s4);
-        Semestru s5 = new Semestru(3, 2, 5);
-        Semestre.add(s5);
-        Semestru s6 = new Semestru(3, 2, 6);
-        Semestre.add(s6);
+        Semestre = Actions.retrieveSemestru();
+        ReportGeneratorService.generateSemestreReport(Semestre);
     }
 
+    public void test()
+    {
+//        for(Materie A:Materii) {
+//            Actions.adaugaMaterie(A);
+//        }
+    }
+    public void testAfisareNota()
+    {
+        System.out.println(Actions.retrieveNota(1, "PAO"));
+    }
 
 
     public void initializareMaterii()
@@ -259,13 +153,13 @@ public class MainService {
         Materie materie31 = new Materie( "SDS", i/6 + 1);
         Materii.add(materie31);
         i++;
-        Materie materie32 = new Materie( "IS", i/6 + 1);
+        Materie materie32 = new Materie( "ISOpt", i/6 + 1);
         Materii.add(materie32);
         i++;
         Materie materie33 = new Materie( "PD", i/6 + 1);
         Materii.add(materie33);
         i++;
-        Materie materie34 = new Materie( "IA", i/6 + 1);
+        Materie materie34 = new Materie( "IAOpt", i/6 + 1);
         Materii.add(materie34);
         i++;
         Materie materie35 = new Materie( "LICENTA", i/6 + 1);
@@ -274,6 +168,7 @@ public class MainService {
         Materie materie36 = new Materie( "PRACTICA", i/6 + 1);
         Materii.add(materie36);
         i++;
+        ReportGeneratorService.generateMateriiReport(Materii);
         Collections.sort(Materii , compSem);
     }
 
