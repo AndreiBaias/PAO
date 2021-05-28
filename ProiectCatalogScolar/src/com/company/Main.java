@@ -13,10 +13,13 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 import static CatalogInformatica.Model.Materie.compSem;
+import static CatalogInformatica.Service.MainService.Materii;
 import static CatalogInformatica.Service.MainService.Studenti;
+import static CatalogInformatica.Utils.Actions.retrieveNota;
 
 public class Main {
 
@@ -45,7 +48,6 @@ public class Main {
 //        mainService.actualizareAnTest(4,12);
         Integer nrOrdStudenti = 1;
         Integer nrOrdProfesori = 1;
-        boolean ok = false;
         System.out.println("Bun venit pe catalogul dumneavoastra digital!");
         while(true) {
             System.out.println("Va rugam sa alegeti o optiune prin introducere a numarului corespunzator:");
@@ -108,7 +110,7 @@ public class Main {
                         System.out.println("Separati fiecare camp cu simbolul <<;>> si la final apasati enter. ");
                         String dateStudentRe = scanner.nextLine();
                         String[] fragmentsRe = dateStudentRe.split(";");
-                        PersoaneService.modificaStudent(nrOrd, fragmentsRe[0], fragmentsRe[1], fragmentsRe[2]);
+                        Actions.actualizareStudent(nrOrd, fragmentsRe[0], fragmentsRe[1], fragmentsRe[2], Actions.retrieveStudent().get(nrOrd-1).getAn());
                     }
                     else
                     if(mod.equals("an"))
@@ -116,7 +118,7 @@ public class Main {
                         System.out.println("In ce an este studentul?");
                         String an = scanner.nextLine();
                         int anNou = Integer.parseInt(an);
-                        PersoaneService.modificaAnStudent(nrOrd, anNou);
+                        Actions.actualizareStudent(nrOrd, Actions.retrieveStudent().get(nrOrd-1).getNume(), Actions.retrieveStudent().get(nrOrd-1).getAdresa(), Actions.retrieveStudent().get(nrOrd-1).getTelefon(), anNou);
                     }
                     ReportGeneratorService.logAction("ModificareStudent");
                     break;
@@ -125,7 +127,7 @@ public class Main {
                     String nrOrdStud1 = scanner.nextLine();
                     int nrOrd1= Integer.parseInt(nrOrdStud1);
                     try {
-                        PersoaneService.arataStudent(nrOrd1);
+                        System.out.println(Actions.retrieveStudent().get(nrOrd1-1));
                     }
                     catch(IndexOutOfBoundsException e)
                     {
@@ -137,7 +139,10 @@ public class Main {
                     System.out.println("Introduceti numarul de ordine al studentului cautat: ");
                     String nrOrdStud2 = scanner.nextLine();
                     int nrOrd2 = Integer.parseInt(nrOrdStud2);
-                    PersoaneService.arataNoteStudent(nrOrd2);
+                    for(Materie m:Materii)
+                    {
+                        System.out.println("La materia " + m.getNumeMaterie() + " nota este " + retrieveNota(nrOrd2, m.getNumeMaterie()));
+                    }
                     ReportGeneratorService.logAction("AfisareNoteStudent");
                     break;
                 case 5:
@@ -145,6 +150,7 @@ public class Main {
                     System.out.println("Separati fiecare camp cu simbolul <<;>> si la final apasati enter. ");
                     String dateProfesor = scanner.nextLine();
                     String[] prof = dateProfesor.split(";");
+                    boolean ok = false;
                     Profesor profesor = new Profesor(
                             nrOrdProfesori,
                             prof[0],

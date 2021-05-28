@@ -181,7 +181,7 @@ public class Actions {
             PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(Retrieve_Student);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Student student = new Student(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+                Student student = new Student(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getInt(5));
                 stud.add(student);
             }
         }catch (SQLException e) {

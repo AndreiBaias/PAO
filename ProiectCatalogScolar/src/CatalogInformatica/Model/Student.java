@@ -21,6 +21,14 @@ public class Student{
         this.an = 1;
     }
 
+    public Student(Integer nrOrd, String nume, String adresa, String telefon, int an) {
+        this.nrOrd = nrOrd;
+        this.nume = nume;
+        this.adresa = adresa;
+        this.telefon = telefon;
+        this.an = an;
+    }
+
     public void setNrOrd(Integer nrOrd) {
         this.nrOrd = nrOrd;
     }
@@ -77,7 +85,6 @@ public class Student{
                 ", Adresa= " + adresa +
                 ", Nr. telefon= " + telefon +
                 ", an universitar= " + an +
-                ", note= " + Arrays.toString(note) +
                 '.';
     }
 
