@@ -206,4 +206,121 @@ public class Actions {
         }
         return nota;
     }
+
+    public static void stergeMaterie(String numeMaterie){
+
+
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(Sterge_Materie, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, numeMaterie);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public static void stergeStudent(int id){
+
+
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(Sterge_Student, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, id);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+
+    public static void stergeSemestru(int nr){
+
+
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(Sterge_Semestru, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, nr);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public static void stergeAn(int nr){
+
+
+        try{
+            PreparedStatement preparedStatement = dbConnection.getDBConnection().prepareStatement(Sterge_An, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, nr);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+
+    public static void actualizareMaterie(Materie materie, String MaterieNume) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = dbConnection.getDBConnection().prepareStatement(Actualizare_Materie, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(2, MaterieNume);
+            preparedStatement.setInt(1, materie.getSemestru());
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public static void actualizareStudent(int id, String StudentNume, String StudentAdresa, String StudentTelefon, int StudentAn) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = dbConnection.getDBConnection().prepareStatement(Actualizare_Student, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(5, id);
+            preparedStatement.setString(1, StudentNume);
+            preparedStatement.setString(2, StudentAdresa);
+            preparedStatement.setString(3, StudentTelefon);
+            preparedStatement.setInt(4, StudentAn);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public static void actualizareNota(int idStudent, String NumeMaterie, int ValoareNota) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = dbConnection.getDBConnection().prepareStatement(Actualizare_Nota, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(2, idStudent);
+            preparedStatement.setInt(1, ValoareNota);
+            preparedStatement.setString(3, NumeMaterie);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public static void actualizareAn(int An, int Serii) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = dbConnection.getDBConnection().prepareStatement(Actualizare_An, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(2, An);
+            preparedStatement.setInt(1, Serii);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
 }

@@ -35,7 +35,7 @@ public class PersoaneService {
 
     public static void arataStudent(int i)
     {
-        System.out.println(Studenti.get(i-1));
+        System.out.println(Actions.retrieveStudent().get(i-1));
     }
 
     public static void arataNoteStudent(int i)

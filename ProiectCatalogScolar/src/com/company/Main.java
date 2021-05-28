@@ -9,6 +9,7 @@ import CatalogInformatica.Utils.Actions;
 
 import java.io.Console;
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,7 +20,7 @@ import static CatalogInformatica.Service.MainService.Studenti;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, IOException {
 
 
         MainService mainService = new MainService();
@@ -27,6 +28,21 @@ public class Main {
         mainService.initializareMaterii();
         mainService.intializareSemestre();
         mainService.testAfisareNota();
+//        Materie materie1 = new Materie( "materieTest", 1);
+//        Materie materie2 = new Materie( "materieUpdate", 6);
+//        mainService.adaugaMaterieTest(materie1);
+//        mainService.stergeMaterieTest("materieTest");
+//        mainService.actualizareMaterieTest(materie2, "materieTest");
+//        mainService.stergeStudentTest(3);
+//        AnUniversitar anNouTest = new AnUniversitar(4, 7);
+//        Actions.adaugaAn(anNouTest);
+//        mainService.stergeAnTest(4);
+//        Semestru semestruTest = new Semestru(4, 7, 7);
+//        Actions.adaugaSemestru(semestruTest);
+//        mainService.stergeSemestruTest(7);
+//        mainService.actualizareStudentTest(2, "studentUpdate", "studentUpdate", "0798765432", 2);
+//        mainService.actualizareNotaTest(2, "PAO", 10);
+//        mainService.actualizareAnTest(4,12);
         Integer nrOrdStudenti = 1;
         Integer nrOrdProfesori = 1;
         boolean ok = false;
@@ -70,6 +86,7 @@ public class Main {
                     nrOrdStudenti++;
                     student.setAn(1);
                     PersoaneService.adaugaStudent(student);
+                    ReportGeneratorService.logAction("AddStudent");
 //                    MainService.Studenti = Actions.retrieveStudent();
 //                    System.out.println(Studenti);
 //                    Student ultStud = Studenti.get(Studenti.size() - 1);
@@ -101,18 +118,27 @@ public class Main {
                         int anNou = Integer.parseInt(an);
                         PersoaneService.modificaAnStudent(nrOrd, anNou);
                     }
+                    ReportGeneratorService.logAction("ModificareStudent");
                     break;
                 case 3:
                     System.out.println("Introduceti numarul de ordine al studentului:");
                     String nrOrdStud1 = scanner.nextLine();
                     int nrOrd1= Integer.parseInt(nrOrdStud1);
-                    PersoaneService.arataStudent(nrOrd1);
+                    try {
+                        PersoaneService.arataStudent(nrOrd1);
+                    }
+                    catch(IndexOutOfBoundsException e)
+                    {
+                        System.out.println("Studentul nu exista!!!");
+                    }
+                    ReportGeneratorService.logAction("AfisareDateStudent");
                     break;
                 case 4:
                     System.out.println("Introduceti numarul de ordine al studentului cautat: ");
                     String nrOrdStud2 = scanner.nextLine();
                     int nrOrd2 = Integer.parseInt(nrOrdStud2);
                     PersoaneService.arataNoteStudent(nrOrd2);
+                    ReportGeneratorService.logAction("AfisareNoteStudent");
                     break;
                 case 5:
                     System.out.println("Introduceti pe rand numele complet, adresa completa si numarul de telefon ale profesorului.");
@@ -154,6 +180,7 @@ public class Main {
                         mainService.MateriiProfesor = new ArrayList<Materie>();
                     }
                     PersoaneService.adaugaProfesor(profesor);
+                    ReportGeneratorService.logAction("AddProfesor");
                     break;
                 case 6:
                     System.out.println("Introduceti numarul de ordine al profesorului:");
@@ -198,6 +225,7 @@ public class Main {
                     }
                     else
                         System.out.println("Optiune invalida! Reluati procesul!");
+                    ReportGeneratorService.logAction("ModificareProfesor");
                     break;
 
                 case 7:
@@ -205,6 +233,7 @@ public class Main {
                     String nrOrdProf1 = scanner.nextLine();
                     int nrOrd4= Integer.parseInt(nrOrdProf1);
                     PersoaneService.arataProfesor(nrOrd4);
+                    ReportGeneratorService.logAction("AfisareProfesor");
                     break;
                 case 8:
                     System.out.println("Introduceti numele materiei despre care vreti detalii sub forma de abreviere fara puncte si fara semn final: ");
@@ -213,6 +242,7 @@ public class Main {
                         System.out.println("Aceasta materie nu se preda in facultatea noastra!");
                     else
                         System.out.println("Materia " + numeMaterie + " este predata in semestrul " + StructuraService.verificaMaterie(numeMaterie).getSemestru());
+                    ReportGeneratorService.logAction("DetaliiMaterie");
                     break;
                 case 9:
                     System.out.println("Introduceti numele materiei pe care o modificati: ");
@@ -246,18 +276,21 @@ public class Main {
                     }
                     else
                         System.out.println("Optiune invalida! Reluati procesul!");
+                    ReportGeneratorService.logAction("ModificareMaterie");
                     break;
                 case 10:
                     System.out.println("Introduceti anul despre care vreti detalii: ");
                     String anCautat = scanner.nextLine();
                     int an = Integer.parseInt(anCautat);
                     StructuraService.afisareAn(an);
+                    ReportGeneratorService.logAction("AfisareAn");
                     break;
                 case 11:
                     System.out.println("Introduceti numarul semestrului: ");
                     String semCautat = scanner.nextLine();
                     int sem = Integer.parseInt(semCautat);
                     StructuraService.afisareSemestru(sem);
+                    ReportGeneratorService.logAction("AfisareSemestru");
                     break;
                 case 12:
                     System.out.println("Introduceti numele materiei, semestrul in care se face, data examenului si numarul de restantieri inscrisi.");
@@ -272,12 +305,14 @@ public class Main {
                     );
                     mainService.Examene.add(examen);
                     System.out.println(examen.toString());
+                    ReportGeneratorService.logAction("ProgramareExamen");
 
                     break;
                 case 13:
                     System.out.println("Introduceti numele materiei de care sunteti interesat: ");
                     String examenCautat = scanner.nextLine();
                     StructuraService.afisareExamen(examenCautat);
+                    ReportGeneratorService.logAction("AfisareExamen");
                     break;
                 default:
                     ReportGeneratorService.generateAniReport(mainService.Ani);
@@ -285,6 +320,7 @@ public class Main {
                     ReportGeneratorService.generateMateriiReport(mainService.Materii);
                     ReportGeneratorService.generateExameneReport(mainService.Examene);
                     System.out.println("Va multumim ca ati folosit aplicatia noastra! La revedere!");
+                    ReportGeneratorService.logAction("EXIT");
                     System.exit(0);
 
 

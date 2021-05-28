@@ -5,6 +5,8 @@ import CatalogInformatica.Model.Examen;
 import CatalogInformatica.Model.Materie;
 import CatalogInformatica.Model.Semestru;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -181,4 +183,21 @@ public class ReportGeneratorService {
 
     }
 
+    public static FileWriter logWriter;
+
+
+    public static void logAction(String actionName) throws IOException {
+
+        File file = new File("C:\\Users\\Jamaica\\Desktop\\Facultate\\An 2\\Sem 2\\PAO\\ProiectCatalogScolar\\src\\reports\\actionLogCSV.csv");
+        logWriter = new FileWriter(file,true);
+        Date timestamp = new Date();
+        String line = actionName+ "," + timestamp + "\n";
+        try {
+            logWriter.append(line);
+            logWriter.flush();
+        } catch (IOException e) {
+            System.err.print("Unable to write to log file");
+            e.printStackTrace();
+        }
+    }
 }

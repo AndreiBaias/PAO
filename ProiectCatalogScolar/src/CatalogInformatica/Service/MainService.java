@@ -6,6 +6,7 @@ import CatalogInformatica.Service.ReportGeneratorService;
 
 import CatalogInformatica.Utils.Actions;
 
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -51,12 +52,55 @@ public class MainService {
 //            Actions.adaugaMaterie(A);
 //        }
     }
+
+    public void adaugaMaterieTest(Materie M)
+    {
+        Actions.adaugaMaterie(M);
+    }
+
+    public void stergeMaterieTest(String M)
+    {
+        Actions.stergeMaterie(M);
+    }
+
+    public void stergeStudentTest(int id)
+    {
+        Actions.stergeStudent(id);
+//        System.out.println("STERS!!!!");
+    }
+
+    public void stergeSemestruTest(int id)
+    {
+        Actions.stergeSemestru(id);
+//        System.out.println("STERS!!!!");
+    }
+
+    public void stergeAnTest(int id)
+    {
+        Actions.stergeAn(id);
+//        System.out.println("STERS!!!!");
+    }
+
     public void testAfisareNota()
     {
         System.out.println(Actions.retrieveNota(1, "PAO"));
     }
 
+    public void actualizareMaterieTest(Materie M, String nume) throws SQLException {
+        Actions.actualizareMaterie(M, nume);
+    }
 
+    public void actualizareStudentTest(int id, String StudentNume, String StudentAdresa, String StudentTelefon, int StudentAn) throws SQLException {
+        Actions.actualizareStudent(id, StudentNume, StudentAdresa, StudentTelefon, StudentAn);
+    }
+
+    public void actualizareNotaTest(int id, String numeMaterie, int valoareNota) throws SQLException {
+        Actions.actualizareNota(id, numeMaterie, valoareNota);
+    }
+
+    public void actualizareAnTest(int an, int serii) throws SQLException {
+        Actions.actualizareAn(an, serii);
+    }
     public void initializareMaterii()
     {
         int i = 0;
